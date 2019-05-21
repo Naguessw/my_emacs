@@ -1,0 +1,8 @@
+# leave the elpa dir out of this due to some flycheck issue
+auto-save-list/
+backups/
+snippets/
+transient/
+ido.last
+projectile-bookmarks.eld
+.lsp-session-v1

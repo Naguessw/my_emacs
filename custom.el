@@ -11,7 +11,7 @@
  '(org-export-backends (quote (ascii html icalendar latex md odt)))
  '(package-selected-packages
    (quote
-    (neotree projectile lsp-ui lsp-mode org-bullets spaceline-all-the-icons spaceline better-defaults)))
+    (helm neotree projectile lsp-ui lsp-mode org-bullets spaceline-all-the-icons spaceline better-defaults)))
  '(powerline-default-separator (quote slant))
  '(projectile-completion-system (quote ivy))
  '(spaceline-all-the-icons-file-name-highlight nil)

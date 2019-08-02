@@ -29,15 +29,21 @@ Disable auto-save and making backup files.
 #+BEGIN_SRC emacs-lisp
   (setq make-backup-files nil)
   (setq auto-save-default nil)
+  (electric-pair-mode 1)
   (setenv "PATH"
-	  (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
+         (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 #+END_SRC
-
+* Helm
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+    :ensure t
+    :config (helm-mode 1))
+#+END_SRC
 * Display preference
 ** transparency
 #+BEGIN_SRC emacs-lisp
-  (set-frame-parameter (selected-frame) 'alpha '(85 . 60))
-  (add-to-list 'default-frame-alist '(alpha .(85 . 60)))
+  (set-frame-parameter (selected-frame) 'alpha '(90 . 70))
+  (add-to-list 'default-frame-alist '(alpha .(90 . 70)))
 #+END_SRC
 ** gruvbox-theme
 #+BEGIN_SRC emacs-lisp

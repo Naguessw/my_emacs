@@ -13,11 +13,16 @@
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(electric-pair-mode 1)
 (setenv "PATH"
-	(concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
+       (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
-(set-frame-parameter (selected-frame) 'alpha '(85 . 60))
-(add-to-list 'default-frame-alist '(alpha .(85 . 60)))
+(use-package helm
+  :ensure t
+  :config (helm-mode 1))
+
+(set-frame-parameter (selected-frame) 'alpha '(90 . 70))
+(add-to-list 'default-frame-alist '(alpha .(90 . 70)))
 
 (use-package gruvbox-theme
   :ensure t

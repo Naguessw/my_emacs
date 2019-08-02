@@ -16,6 +16,9 @@
 (setenv "PATH"
 	(concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
+(set-frame-parameter (selected-frame) 'alpha '(85 . 60))
+(add-to-list 'default-frame-alist '(alpha .(85 . 60)))
+
 (use-package gruvbox-theme
   :ensure t
   :config (load-theme 'gruvbox t))
@@ -107,6 +110,15 @@
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
   (setq projectile-project-search-path '("~/Workspace/"))
   (projectile-mode +1)
+  )
+
+(use-package neotree
+  :ensure t
+  :bind (("<f2>" . neotree-toggle))
+  :config
+  (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
+  (setq neo-smart-open t)
+  (setq projectile-switch-project-action 'neotree-projectile-action)
   )
 
 (setq org-hide-emphasis-markers t)

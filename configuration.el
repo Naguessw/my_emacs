@@ -17,10 +17,6 @@
 (setenv "PATH"
        (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
-(use-package helm
-  :ensure t
-  :config (helm-mode 1))
-
 (set-frame-parameter (selected-frame) 'alpha '(90 . 70))
 (add-to-list 'default-frame-alist '(alpha .(90 . 70)))
 
@@ -167,3 +163,28 @@
   :init
   (setq venv-workon-cd t)
   (add-hook 'venv-postactivate-hook #'lsp))
+
+(use-package helm
+  :ensure t
+  :bind
+  ("C-x C-f" . helm-find-files)
+  ("C-x b" . helm-buffers-list)
+  ("M-x" . helm-M-x)
+  :bind
+  (:map helm-map
+        ("<tab>" . helm-execute-persistent-action)
+        ("C-z" . helm-select-action))
+  :init
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+  (setq helm-split-window-in-side-p t
+        helm-move-to-line-cycle-in-source t
+        helm-ff-search-library-in-sexp t
+        helm-scroll-amount 8
+        helm-ff-file-name-history-use-recentf t
+        helm-echo-input-in-header-line t
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 20)
+  :config (progn
+            (helm-mode 1)
+            (helm-autoresize-mode 1)))

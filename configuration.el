@@ -17,8 +17,8 @@
 (setenv "PATH"
        (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 70))
-(add-to-list 'default-frame-alist '(alpha .(90 . 70)))
+(set-frame-parameter (selected-frame) 'alpha '(90 . 80))
+(add-to-list 'default-frame-alist '(alpha .(90 . 80)))
 
 (use-package gruvbox-theme
   :ensure t
@@ -71,13 +71,49 @@
 
 (use-package better-defaults)
 
+(use-package helm
+  :ensure t
+  :bind
+  ("C-x C-f" . helm-find-files)
+  ("C-x b" . helm-buffers-list)
+  ("M-x" . helm-M-x)
+  :bind
+  (:map helm-map
+        ("<tab>" . helm-execute-persistent-action)
+        ("C-z" . helm-select-action))
+  :config
+  (when (executable-find "curl")
+    (setq helm-google-suggest-use-curl-p t))
+  (setq helm-split-window-in-side-p t
+        helm-move-to-line-cycle-in-source t
+        helm-ff-search-library-in-sexp t
+        helm-scroll-amount 8
+        helm-ff-file-name-history-use-recentf t
+        helm-echo-input-in-header-line t
+        helm-autoresize-max-height 0
+        helm-autoresize-min-height 20))
+(helm-mode 1)
+(helm-autoresize-mode 1)
+
 (use-package magit)
+
+(use-package company
+  :ensure t)
+
+(use-package company-tabnine
+  :ensure t
+  :config
+  (push 'company-tabnine company-backends)
+  (setq company-idle-delay 0)
+  (setq company-show-numbers t))
 
 (use-package lsp-mode
   :ensure t
   :commands lsp
   :init
-  (add-hook 'python-mode-hook #'lsp)
+  (add-hook 'python-mode-hook (lambda()
+                                (lsp)
+                                (push 'company-tabnine company-backends)))
   (setq lsp-ui-flycheck-enable t)
   (setq lsp-ui-peek-enable nil)
   (setq lsp-ui-imenu-enable nil)
@@ -91,8 +127,8 @@
   (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package company-lsp
-  :ensure t
-  :config (push 'company-lsp company-backends))
+  :ensure t)
+  ;; :config (push 'company-lsp company-backends))
 
 (add-to-list 'display-buffer-alist
              `(,(rx bos "*Flycheck errors*" eos)
@@ -163,28 +199,3 @@
   :init
   (setq venv-workon-cd t)
   (add-hook 'venv-postactivate-hook #'lsp))
-
-(use-package helm
-  :ensure t
-  :bind
-  ("C-x C-f" . helm-find-files)
-  ("C-x b" . helm-buffers-list)
-  ("M-x" . helm-M-x)
-  :bind
-  (:map helm-map
-        ("<tab>" . helm-execute-persistent-action)
-        ("C-z" . helm-select-action))
-  :init
-  (when (executable-find "curl")
-    (setq helm-google-suggest-use-curl-p t))
-  (setq helm-split-window-in-side-p t
-        helm-move-to-line-cycle-in-source t
-        helm-ff-search-library-in-sexp t
-        helm-scroll-amount 8
-        helm-ff-file-name-history-use-recentf t
-        helm-echo-input-in-header-line t
-        helm-autoresize-max-height 0
-        helm-autoresize-min-height 20)
-  :config (progn
-            (helm-mode 1)
-            (helm-autoresize-mode 1)))

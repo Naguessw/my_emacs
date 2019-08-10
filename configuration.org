@@ -142,7 +142,9 @@ need to download package from github: [[git clone --depth=1 https://github.com/m
 #+BEGIN_SRC emacs-lisp
   (use-package awesome-tab
     :load-path "~/.emacs.d/awesome-tab/"
-    :config (awesome-tab-mode 1))
+    :config
+    (setq awesome-tab-height 32)
+    (awesome-tab-mode 1))
 #+END_SRC
 
 * Magit

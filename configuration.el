@@ -98,7 +98,9 @@
 
 (use-package awesome-tab
   :load-path "~/.emacs.d/awesome-tab/"
-  :config (awesome-tab-mode 1))
+  :config
+  (setq awesome-tab-height 32)
+  (awesome-tab-mode 1))
 
 (use-package magit
   :ensure t)

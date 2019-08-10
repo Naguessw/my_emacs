@@ -1,7 +1,7 @@
 (require 'package)
 (setq package-enable-at-startup nil)
-(add-to-list 'package-archives
-             '("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/") t)
+(setq package-archives '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
+                         ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
 
 (unless (package-installed-p 'use-package)
@@ -69,7 +69,8 @@
        ))
 ;; (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 
-(use-package better-defaults)
+(use-package better-defaults
+  :ensure t)
 
 (use-package helm
   :ensure t
@@ -95,7 +96,12 @@
 (helm-mode 1)
 (helm-autoresize-mode 1)
 
-(use-package magit)
+(use-package awesome-tab
+  :load-path "~/.emacs.d/awesome-tab/"
+  :config (awesome-tab-mode 1))
+
+(use-package magit
+  :ensure t)
 
 (use-package company
   :ensure t)
@@ -106,6 +112,9 @@
   (push 'company-tabnine company-backends)
   (setq company-idle-delay 0)
   (setq company-show-numbers t))
+
+(use-package flycheck
+  :ensure t)
 
 (use-package lsp-mode
   :ensure t

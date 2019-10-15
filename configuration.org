@@ -42,12 +42,15 @@ Disable auto-save and making backup files.
   (add-to-list 'default-frame-alist '(alpha .(90 . 80)))
 #+END_SRC
 
-** gruvbox-theme
+** theme
 
 #+BEGIN_SRC emacs-lisp
-  (use-package gruvbox-theme
+  ;; (use-package gruvbox-theme
+  ;;   :ensure t)
+  (use-package spacemacs-theme
     :ensure t
-    :config (load-theme 'gruvbox t))
+    :no-require t
+    :config (load-theme 'spacemacs-dark t))
 #+END_SRC
 
 ** modeline
@@ -55,12 +58,17 @@ Smart mode line for terminal.
 Spaceline for GNU.
 
 #+BEGIN_SRC emacs-lisp
+  ;; (use-package doom-modeline
+  ;;   :ensure t
+  ;;   :hook (after-init . doom-modeline-mode))
+
   (cond ((display-graphic-p)
          ;; SPACELINE
          (use-package spaceline
            :ensure t
            :init
            (require 'spaceline-config)
+           ;; (setq spaceline-all-the-icons--height 0.9)
            (spaceline-define-segment env
              "current virtualenv"
              (propertize (venv-current-name) 'face '((t (:foreground "IndianRed"))))
@@ -70,7 +78,8 @@ Spaceline for GNU.
          ;; (load "~/.emacs.d/my_mode_line")
 
          ;; ALL THE ICONS
-         (use-package all-the-icons)
+         (use-package all-the-icons
+           :ensure t)
 
          ;; SPACELINE ALL THE ICONS
          (use-package spaceline-all-the-icons
@@ -80,25 +89,10 @@ Spaceline for GNU.
            (spaceline-all-the-icons-theme))
          )
         (t
-         ;; SMART MODE LINE
-         (use-package smart-mode-line
-           :ensure t
-           :init (add-hook 'after-init-hook 'sml/setup))
-
-         ;; POWERLINE
-         (use-package powerline
-           :ensure t
-           :init (setq powerline-default-separator 'utf-8))
-
-         ;; POWERLINE THEME
-         (use-package smart-mode-line-powerline-theme
-           :ensure t
-           :requires (smart-mode-line powerline)
-           :init
-           (setq sml/no-confirm-load-theme t)
-           (sml/apply-theme 'powerline))
+          (use-package doom-modeline
+            :ensure t
+            :hook (after-init . doom-modeline-mode))
          ))
-  ;; (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
 #+END_SRC
 
 * Better defaults
@@ -140,9 +134,9 @@ Spaceline for GNU.
 need to download package from github: [[git clone --depth=1 https://github.com/manateelazycat/awesome-tab.git][awesome-tab from manateelazycat]]
 
 #+BEGIN_SRC emacs-lisp
-  (use-package awesome-tab
-    :load-path "~/.emacs.d/awesome-tab/"
-    :config (awesome-tab-mode 1))
+  ;; (use-package awesome-tab
+  ;;   :load-path "~/.emacs.d/awesome-tab/"
+  ;;   :config (awesome-tab-mode 1))
 #+END_SRC
 
 * Magit
@@ -178,6 +172,7 @@ need to download package from github: [[git clone --depth=1 https://github.com/m
     :init
     (add-hook 'python-mode-hook (lambda()
                                   (lsp)
+                                  (setq flycheck-checker 'python-pylint)
                                   (push 'company-tabnine company-backends)))
     (setq lsp-ui-flycheck-enable t)
     (setq lsp-ui-peek-enable nil)
@@ -229,6 +224,7 @@ need to download package from github: [[git clone --depth=1 https://github.com/m
     (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
     (setq neo-smart-open t)
     (setq projectile-switch-project-action 'neotree-projectile-action)
+    (add-to-list 'neo-hidden-regexp-list "__pycache__")
     )
 #+END_SRC
 

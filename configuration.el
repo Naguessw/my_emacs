@@ -14,6 +14,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode 1)
+(global-display-line-numbers-mode)
 (setenv "PATH"
        (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
@@ -21,53 +22,60 @@
 (add-to-list 'default-frame-alist '(alpha .(90 . 80)))
 
 (use-package gruvbox-theme
+  :ensure t)
+;; (use-package spacemacs-theme
+;;   :ensure t
+;;   :no-require t
+;;   :config (load-theme 'spacemacs-dark t))
+
+(defun setup-sml-and-theme ()
+  (setq sml/no-confirm-load-theme t)
+  (setq powerline-default-separator 'utf-8)
+  (sml/setup)
+  (sml/apply-theme 'powerline))
+
+(use-package smart-mode-line
+  :ensure t)
+
+(use-package powerline
+  :ensure t)
+
+(use-package smart-mode-line-powerline-theme
   :ensure t
-  :config (load-theme 'gruvbox t))
+  :requires (smart-mode-line powerline)
+  :hook (after-init . setup-sml-and-theme))
 
-(cond ((display-graphic-p)
-       ;; SPACELINE
-       (use-package spaceline
-         :ensure t
-         :init
-         (require 'spaceline-config)
-         (spaceline-define-segment env
-           "current virtualenv"
-           (propertize (venv-current-name) 'face '((t (:foreground "IndianRed"))))
-           :enable t)
-         ;; (spaceline-emacs-theme)
-         )
-       ;; (load "~/.emacs.d/my_mode_line")
+;; (cond ((display-graphic-p)
+;;        ;; SPACELINE
+;;        (use-package spaceline
+;; 	 :ensure t
+;; 	 :init
+;; 	 (require 'spaceline-config)
+;; 	 ;; (setq spaceline-all-the-icons--height 0.9)
+;; 	 (spaceline-define-segment env
+;; 	   "current virtualenv"
+;; 	   (propertize (venv-current-name) 'face '((t (:foreground "IndianRed"))))
+;; 	   :enable t)
+;; 	 ;; (spaceline-emacs-theme)
+;; 	 )
+;;        ;; (load "~/.emacs.d/my_mode_line")
 
-       ;; ALL THE ICONS
-       (use-package all-the-icons)
+;;        ;; ALL THE ICONS
+;;        ;; (use-package all-the-icons
+;;        ;; 	 :ensure t)
 
-       ;; SPACELINE ALL THE ICONS
-       (use-package spaceline-all-the-icons
-         :ensure t
-         :after spaceline
-         :config
-         (spaceline-all-the-icons-theme))
-       )
-      (t
-       ;; SMART MODE LINE
-       (use-package smart-mode-line
-         :ensure t
-         :init (add-hook 'after-init-hook 'sml/setup))
-
-       ;; POWERLINE
-       (use-package powerline
-         :ensure t
-         :init (setq powerline-default-separator 'utf-8))
-
-       ;; POWERLINE THEME
-       (use-package smart-mode-line-powerline-theme
-         :ensure t
-         :requires (smart-mode-line powerline)
-         :init
-         (setq sml/no-confirm-load-theme t)
-         (sml/apply-theme 'powerline))
-       ))
-;; (setq-default mode-line-format (cons '(:exec venv-current-name) mode-line-format))
+;;        ;; SPACELINE ALL THE ICONS
+;;        ;; (use-package spaceline-all-the-icons
+;;        ;; 	 :ensure t
+;;        ;; 	 :after spaceline
+;;        ;; 	 :config
+;;        ;; 	 (spaceline-all-the-icons-theme))
+;;        )
+;;       (t
+;; 	(use-package doom-modeline
+;; 	  :ensure t
+;; 	  :hook (after-init . doom-modeline-mode))
+;;        ))
 
 (use-package better-defaults
   :ensure t)
@@ -96,9 +104,9 @@
 (helm-mode 1)
 (helm-autoresize-mode 1)
 
-(use-package awesome-tab
-  :load-path "~/.emacs.d/awesome-tab/"
-  :config (awesome-tab-mode 1))
+;; (use-package awesome-tab
+;;   :load-path "~/.emacs.d/awesome-tab/"
+;;   :config (awesome-tab-mode 1))
 
 (use-package magit
   :ensure t)
@@ -122,6 +130,7 @@
   :init
   (add-hook 'python-mode-hook (lambda()
                                 (lsp)
+                                (setq flycheck-checker 'python-pylint)
                                 (push 'company-tabnine company-backends)))
   (setq lsp-ui-flycheck-enable t)
   (setq lsp-ui-peek-enable nil)
@@ -165,11 +174,12 @@
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   (setq neo-smart-open t)
   (setq projectile-switch-project-action 'neotree-projectile-action)
+  (add-to-list 'neo-hidden-regexp-list "__pycache__")
   )
 
 (setq org-hide-emphasis-markers t)
-;; (setq org-ellipsis "↯")
-(setq org-ellipsis "↴")
+(setq org-startup-indented t)
+(setq org-ellipsis " ..")
 (use-package org-bullets
   :ensure t
   :config
@@ -189,10 +199,10 @@
        `(org-level-7 ((t (,@headline ,@variable-tuple))))
        `(org-level-6 ((t (,@headline ,@variable-tuple))))
        `(org-level-5 ((t (,@headline ,@variable-tuple))))
-       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
        `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
        `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
 (setq org-emphasis-alist

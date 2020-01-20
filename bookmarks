@@ -2,7 +2,12 @@
 ;;; This format is meant to be slightly human-readable;
 ;;; nevertheless, you probably don't want to edit it.
 ;;; -*- End Of Bookmark File Format Version Stamp -*-
-(("emacs_conf"
+(("blog"
+ (filename . "~/notes/blog/content/note.org")
+ (front-context-string . "#+HUGO_BASE_DIR:")
+ (rear-context-string)
+ (position . 1))
+("emacs_conf"
  (filename . "~/.emacs.d/configuration.org")
  (front-context-string . "ckage\nSet packag")
  (rear-context-string . "macs\n\n* Setup pa")

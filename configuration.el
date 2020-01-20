@@ -18,9 +18,6 @@
 (setenv "PATH"
        (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 80))
-(add-to-list 'default-frame-alist '(alpha .(90 . 80)))
-
 (use-package gruvbox-theme
   :ensure t)
 ;; (use-package spacemacs-theme
@@ -205,6 +202,10 @@
        `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
+(setq org-bullets-bullet-list
+      '("◉"
+        "○"
+        "✸"))
 (setq org-emphasis-alist
       '(("*" (bold :foreground "IndianRed1" :weight bold))
         ("/" italic)
@@ -218,3 +219,7 @@
   :init
   (setq venv-workon-cd t)
   (add-hook 'venv-postactivate-hook #'lsp))
+
+(use-package ox-hugo
+  :ensure t
+  :after ox)

@@ -38,10 +38,10 @@ Disable auto-save and making backup files.
 * Display preference
 ** transparency
 
-#+BEGIN_SRC emacs-lisp
-  (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
-  (add-to-list 'default-frame-alist '(alpha .(90 . 80)))
-#+END_SRC
+# #+BEGIN_SRC emacs-lisp
+#   (set-frame-parameter (selected-frame) 'alpha '(90 . 80))
+#   (add-to-list 'default-frame-alist '(alpha .(90 . 80)))
+# #+END_SRC
 
 ** theme
 
@@ -273,6 +273,10 @@ need to download package from github: [[git clone --depth=1 https://github.com/m
          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
          `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
+  (setq org-bullets-bullet-list
+        '("◉"
+          "○"
+          "✸"))
   (setq org-emphasis-alist
         '(("*" (bold :foreground "IndianRed1" :weight bold))
           ("/" italic)
@@ -290,4 +294,11 @@ need to download package from github: [[git clone --depth=1 https://github.com/m
     :init
     (setq venv-workon-cd t)
     (add-hook 'venv-postactivate-hook #'lsp))
+#+END_SRC
+
+* Hugo
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-hugo
+    :ensure t
+    :after ox)
 #+END_SRC

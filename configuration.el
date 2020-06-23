@@ -14,6 +14,7 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (electric-pair-mode 1)
+(setq electric-pair-preserve-balance nil)
 (global-display-line-numbers-mode)
 (setenv "PATH"
        (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
@@ -176,11 +177,11 @@
 
 (setq org-hide-emphasis-markers t)
 (setq org-startup-indented t)
-(setq org-ellipsis " ..")
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+;; (setq org-ellipsis " ..")
+;; (use-package org-bullets
+;;   :ensure t
+;;   :config
+;;   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
 (if (display-graphic-p)
     (let* ((variable-tuple
             (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
@@ -192,20 +193,20 @@
 
       (custom-theme-set-faces
        'user
-       `(org-level-8 ((t (,@headline ,@variable-tuple))))
-       `(org-level-7 ((t (,@headline ,@variable-tuple))))
-       `(org-level-6 ((t (,@headline ,@variable-tuple))))
-       `(org-level-5 ((t (,@headline ,@variable-tuple))))
-       `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
-       `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-       `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-       `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
+       ;; `(org-level-8 ((t (,@headline ,@variable-tuple))))
+       ;; `(org-level-7 ((t (,@headline ,@variable-tuple))))
+       ;; `(org-level-6 ((t (,@headline ,@variable-tuple))))
+       ;; `(org-level-5 ((t (,@headline ,@variable-tuple))))
+       ;; `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.25))))
+       ;; `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+       ;; `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+       ;; `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.5))))
        `(org-document-title ((t (,@headline ,@variable-tuple :height 2.0 :underline nil)))))))
 
-(setq org-bullets-bullet-list
-      '("◉"
-        "○"
-        "✸"))
+;; (setq org-bullets-bullet-list
+;;       '("◉"
+;;         "○"
+;;         "✸"))
 (setq org-emphasis-alist
       '(("*" (bold :foreground "IndianRed1" :weight bold))
         ("/" italic)

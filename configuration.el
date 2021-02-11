@@ -3,6 +3,9 @@
 (setq package-archives '(("gnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
                          ("melpa" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
 (package-initialize)
+(defun fresh ()
+  (interactive)
+  (load-file "~/.emacs.d/init.el"))
 
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
@@ -13,11 +16,15 @@
 
 (setq make-backup-files nil)
 (setq auto-save-default nil)
+(setq shell-file-name "/bin/zsh")
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
 (global-display-line-numbers-mode)
 (setenv "PATH"
-       (concat "/Library/TeX/texbin/" ":" (getenv "PATH")))
+       (concat "/usr/local/bin:" "/Library/TeX/texbin/:" (getenv "PATH")))
+(add-to-list 'exec-path "/usr/local/bin/")
+(use-package all-the-icons
+  :ensure t)
 
 (use-package gruvbox-theme
   :ensure t)
@@ -26,56 +33,110 @@
 ;;   :no-require t
 ;;   :config (load-theme 'spacemacs-dark t))
 
-(defun setup-sml-and-theme ()
-  (setq sml/no-confirm-load-theme t)
-  (setq powerline-default-separator 'utf-8)
-  (sml/setup)
-  (sml/apply-theme 'powerline))
+;; (defun setup-sml-and-theme ()
+;;   (setq sml/no-confirm-load-theme t)
+;;   (setq powerline-default-separator 'utf-8)
+;;   (sml/setup)
+;;   (sml/apply-theme 'powerline))
 
-(use-package smart-mode-line
-  :ensure t)
+;; (use-package smart-mode-line
+;;   :ensure t)
 
-(use-package powerline
-  :ensure t)
+;; (use-package powerline
+;;   :ensure t)
 
-(use-package smart-mode-line-powerline-theme
-  :ensure t
-  :requires (smart-mode-line powerline)
-  :hook (after-init . setup-sml-and-theme))
+;; (use-package smart-mode-line-powerline-theme
+;;   :ensure t
+;;   :requires (smart-mode-line powerline)
+;;   :hook (after-init . setup-sml-and-theme))
 
-;; (cond ((display-graphic-p)
-;;        ;; SPACELINE
-;;        (use-package spaceline
-;; 	 :ensure t
-;; 	 :init
-;; 	 (require 'spaceline-config)
-;; 	 ;; (setq spaceline-all-the-icons--height 0.9)
-;; 	 (spaceline-define-segment env
-;; 	   "current virtualenv"
-;; 	   (propertize (venv-current-name) 'face '((t (:foreground "IndianRed"))))
-;; 	   :enable t)
-;; 	 ;; (spaceline-emacs-theme)
-;; 	 )
-;;        ;; (load "~/.emacs.d/my_mode_line")
+(use-package doom-modeline
+  :hook ((after-init . doom-modeline-mode))
+  :init (setq
+         doom-modeline-height                      20
+         doom-modeline-bar-width                   3
+         doom-modeline-window-width-limit          fill-column
+         doom-modeline-project-detection           'project  ;; changed
+         doom-modeline-buffer-file-name-style      'relative-to-project  ;; changed
+         doom-modeline-icon                        (display-graphic-p)
+         ;; doom-modeline-icon                        t  ;; changed
+         doom-modeline-major-mode-icon             t
+         doom-modeline-major-mode-color-icon       nil
+         doom-modeline-buffer-state-icon           t
+         doom-modeline-buffer-modification-icon    nil
+         doom-modeline-unicode-fallback            nil  ;; changed
+         doom-modeline-minor-modes                 nil
+         doom-modeline-enable-word-count           nil
+         doom-modeline-continuous-word-count-modes '(markdown-mode gfm-mode org-mode text-mode)
+         doom-modeline-buffer-encoding             nil
+         doom-modeline-indent-info                 nil
+         doom-modeline-checker-simple-format       nil
+         doom-modeline-number-limit                99
+         doom-modeline-vcs-max-length              12
+         doom-modeline-persp-name                  t
+         doom-modeline-display-default-persp-name  nil
+         doom-modeline-lsp                         t
+         doom-modeline-github                      nil
+         doom-modeline-github-interval             (* 30 60)
+         doom-modeline-modal-icon                  nil
 
-;;        ;; ALL THE ICONS
-;;        ;; (use-package all-the-icons
-;;        ;; 	 :ensure t)
+         doom-modeline-env-version       t
+         doom-modeline-env-enable-python t
+         ;; doom-modeline-env-enable-ruby   t
+         ;; doom-modeline-env-enable-perl   t
+         ;; doom-modeline-env-enable-go     t
+         ;; doom-modeline-env-enable-elixir t
+         ;; doom-modeline-env-enable-rust   t
 
-;;        ;; SPACELINE ALL THE ICONS
-;;        ;; (use-package spaceline-all-the-icons
-;;        ;; 	 :ensure t
-;;        ;; 	 :after spaceline
-;;        ;; 	 :config
-;;        ;; 	 (spaceline-all-the-icons-theme))
-;;        )
-;;       (t
-;; 	(use-package doom-modeline
-;; 	  :ensure t
-;; 	  :hook (after-init . doom-modeline-mode))
-;;        ))
+         doom-modeline-env-python-executable "python"
+         ;; doom-modeline-env-ruby-executable   "ruby"
+         ;; doom-modeline-env-perl-executable   "perl"
+         ;; doom-modeline-env-go-executable     "go"
+         ;; doom-modeline-env-elixir-executable "iex"
+         ;; doom-modeline-env-rust-executable   "rustc"
+
+         doom-modeline-env-load-string "..."
+
+         doom-modeline-mu4e        t
+         doom-modeline-irc         t
+         doom-modeline-irc-stylize 'identity)
+  :config
+  (doom-modeline-def-segment nathan/time
+    "Time"
+    (when (doom-modeline--active)
+      (propertize
+      (format-time-string " %b %d, %Y - %H:%M ")
+      'face (when (doom-modeline--active) `(:foreground "#000000" :background "#F7DC6F")))))
+
+  (doom-modeline-def-modeline 'main
+    '(bar workspace-name matches buffer-info buffer-position parrot selection-info misc-info process)
+    '(objed-state grip lsp major-mode vcs checker nathan/time))
+
+  (doom-modeline-def-modeline 'minimal
+    '(bar matches buffer-info-simple)
+    '(media-info major-mode "  " nathan/time))
+
+  ;; Change behaviors
+  (defun nathan/doom-modeline-update-buffer-file-name (&rest _)
+    "Update buffer file name in mode-line."
+    (setq doom-modeline--buffer-file-name
+          (if buffer-file-name
+              (doom-modeline-buffer-file-name)
+            (if (string-prefix-p "*Org Src" (format-mode-line "%b"))
+                ""
+              (propertize "%b"
+                          'face (if (doom-modeline--active)
+                                    'doom-modeline-buffer-file
+                                  'mode-line-inactive)
+                          'help-echo "Buffer name
+    mouse-1: Previous buffer\nmouse-3: Next buffer"
+                          'local-map mode-line-buffer-identification-keymap)))))
+  (advice-add #'doom-modeline-update-buffer-file-name :override #'nathan/doom-modeline-update-buffer-file-name))
 
 (use-package better-defaults
+  :ensure t)
+
+(use-package ag
   :ensure t)
 
 (use-package helm
@@ -97,10 +158,14 @@
         helm-scroll-amount 8
         helm-ff-file-name-history-use-recentf t
         helm-echo-input-in-header-line t
-        helm-autoresize-max-height 0
+        helm-autoresize-max-height 40
         helm-autoresize-min-height 20))
+(use-package helm-ag
+  :ensure t)
+
 (helm-mode 1)
 (helm-autoresize-mode 1)
+(helm-projectile-on)
 
 ;; (use-package awesome-tab
 ;;   :load-path "~/.emacs.d/awesome-tab/"
@@ -108,43 +173,45 @@
 
 (use-package magit
   :ensure t)
+(global-set-key (kbd "C-x g") 'magit-status)
 
-(use-package company
-  :ensure t)
-
-(use-package company-tabnine
-  :ensure t
-  :config
-  (push 'company-tabnine company-backends)
-  (setq company-idle-delay 0)
-  (setq company-show-numbers t))
+;; (use-package company-tabnine
+;;   :ensure t
+;;   :config
+;;   (push 'company-tabnine company-backends)
+;;   (setq company-idle-delay 0)
+;;   (setq company-show-numbers t))
 
 (use-package flycheck
-  :ensure t)
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook (lambda ()
+    (setq flycheck-checker 'python-pylint))))
 
 (use-package lsp-mode
   :ensure t
-  :commands lsp
-  :init
-  (add-hook 'python-mode-hook (lambda()
-                                (lsp)
-                                (setq flycheck-checker 'python-pylint)
-                                (push 'company-tabnine company-backends)))
+  :hook ((python-mode . lsp))
+  :commands lsp)
+
+(use-package lsp-ui
+  :ensure t
+  :config
   (setq lsp-ui-flycheck-enable t)
   (setq lsp-ui-peek-enable nil)
   (setq lsp-ui-imenu-enable nil)
   (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-doc-enable nil)
   (setq lsp-prefer-flymake nil))
+  ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
-(use-package lsp-ui
+(use-package company
   :ensure t
   :config
-  (add-hook 'lsp-mode-hook 'lsp-ui-mode))
+  (add-hook 'after-init-hook 'global-company-mode))
 
 (use-package company-lsp
-  :ensure t)
-  ;; :config (push 'company-lsp company-backends))
+  :ensure t
+  :config (push 'company-lsp company-backends))
 
 (add-to-list 'display-buffer-alist
              `(,(rx bos "*Flycheck errors*" eos)
@@ -154,14 +221,13 @@
               (reusable-frames . visible)
               (window-height   . 0.33)))
 
-(setq flycheck-checker 'python-pylint)
-
 (use-package projectile
   :ensure t
   :config
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (setq projectile-project-search-path '("~/Workspace/"))
+  (setq projectile-project-search-path '("~/workspace/" "~/workspace/user_admin/"))
+  ;; (setq projectile-switch-project-action 'venv-projectile-auto-workon)
   (projectile-mode +1)
   )
 
@@ -171,6 +237,9 @@
   :config
   (setq neo-theme (if (display-graphic-p) 'icons 'arrow))
   (setq neo-smart-open t)
+  ;; (setq neo-autorefresh t)
+  (setq neo-mode-line-type 'none)
+  (setq neo-window-width 40)
   (setq projectile-switch-project-action 'neotree-projectile-action)
   (add-to-list 'neo-hidden-regexp-list "__pycache__")
   )
@@ -219,7 +288,8 @@
   :ensure t
   :init
   (setq venv-workon-cd t)
-  (add-hook 'venv-postactivate-hook #'lsp))
+  (add-hook 'venv-postactivate-hook (lambda ()
+    (setq flycheck-python-pylint-executable (concat "~/.virtualenvs/" venv-current-name "/bin/pylint")))))
 
 (use-package ox-hugo
   :ensure t

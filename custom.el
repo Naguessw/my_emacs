@@ -4,33 +4,38 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   '("aded61687237d1dff6325edb492bde536f40b048eab7246c61d5c6643c696b7f" "4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default))
  '(display-line-numbers t)
- '(initial-frame-alist (quote ((fullscreen . maximized))))
+ '(helm-completion-style 'emacs)
+ '(initial-frame-alist '((fullscreen . maximized)))
  '(line-number-mode nil)
  '(lsp-enable-snippet nil)
  '(mode-line-format
-   (quote
-    ("%e" mode-line-front-space mode-line-frame-identification mode-line-buffer-identification sml/pos-id-separator mode-line-position
+   '("%e" mode-line-front-space mode-line-frame-identification mode-line-buffer-identification sml/pos-id-separator mode-line-position
      (vc-mode vc-mode)
-     sml/pre-modes-separator mode-line-misc-info mode-line-end-spaces)))
+     sml/pre-modes-separator mode-line-misc-info mode-line-end-spaces))
  '(mode-line-in-non-selected-windows nil)
- '(neo-window-width 40)
- '(org-export-backends (quote (ascii html icalendar latex md odt)))
- '(package-selected-packages (quote (lsp-mode spaceline-all-the-icons better-defaults)))
+ '(org-export-backends '(ascii html icalendar latex md odt))
+ '(package-selected-packages
+   '(helm-ag helm-projectile ag gruvbox-theme doom-modeline ivy all-the-icons lsp-mode spaceline-all-the-icons better-defaults))
  '(powerline-buffer-size-suffix nil)
- '(powerline-default-separator (quote bar))
+ '(powerline-default-separator 'bar)
  '(powerline-display-buffer-size nil)
  '(powerline-display-hud nil)
  '(powerline-display-mule-info nil)
  '(powerline-text-scale-factor nil)
- '(projectile-completion-system (quote ivy))
+ '(projectile-completion-system 'ivy)
+ '(safe-local-variable-values '((eval venv-workon "feedback")))
  '(sml/show-client nil)
  '(spaceline-all-the-icons-file-name-highlight nil)
  '(spaceline-all-the-icons-highlight-file-name t)
- '(spaceline-all-the-icons-icon-set-eyebrowse-slot (quote circle))
- '(spaceline-all-the-icons-icon-set-sun-time (quote sun/moon))
- '(spaceline-all-the-icons-icon-set-vc-icon-git (quote github-logo))
- '(spaceline-all-the-icons-separator-type (quote none)))
+ '(spaceline-all-the-icons-icon-set-eyebrowse-slot 'circle)
+ '(spaceline-all-the-icons-icon-set-sun-time 'sun/moon)
+ '(spaceline-all-the-icons-icon-set-vc-icon-git 'github-logo)
+ '(spaceline-all-the-icons-separator-type 'none))
+
+(load-theme 'gruvbox-dark-medium)
 
 (if (display-graphic-p)
     (custom-set-variables

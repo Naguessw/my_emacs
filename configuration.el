@@ -17,14 +17,38 @@
 (setq make-backup-files nil)
 (setq auto-save-default nil)
 (setq shell-file-name "/bin/zsh")
+(setq debug-on-error nil)
+
 (electric-pair-mode 1)
 (setq electric-pair-preserve-balance nil)
+(setq electric-pair-inhibit-predicate
+      (lambda (c)
+        (if (or (char-equal c ?\") (char-equal c ?\')) (electric-pair-default-inhibit c))))
+
 (global-display-line-numbers-mode)
 (setenv "PATH"
-       (concat "/usr/local/bin:" "/Library/TeX/texbin/:" (getenv "PATH")))
+        (concat "/usr/local/bin:" "/Library/TeX/texbin/:" (getenv "PATH")))
 (add-to-list 'exec-path "/usr/local/bin/")
 (use-package all-the-icons
   :ensure t)
+(add-to-list 'default-frame-alist '(fullscreen . fullboth))
+
+(use-package exec-path-from-shell
+  :ensure t)
+(exec-path-from-shell-initialize)
+
+(defun toggle-transparency ()
+   (interactive)
+   (let ((alpha (frame-parameter nil 'alpha)))
+     (set-frame-parameter
+      nil 'alpha
+      (if (eql (cond ((numberp alpha) alpha)
+                     ((numberp (cdr alpha)) (cdr alpha))
+                     ;; Also handle undocumented (<active> <inactive>) form.
+                     ((numberp (cadr alpha)) (cadr alpha)))
+               100)
+          '(90 . 80) '(100 . 100)))))
+(global-set-key (kbd "<f5>") 'toggle-transparency)
 
 (use-package gruvbox-theme
   :ensure t)
@@ -51,7 +75,7 @@
 ;;   :hook (after-init . setup-sml-and-theme))
 
 (use-package doom-modeline
-  :hook ((after-init . doom-modeline-mode))
+  :hook ((emacs-startup . doom-modeline-mode))
   :init (setq
          doom-modeline-height                      20
          doom-modeline-bar-width                   3
@@ -109,7 +133,7 @@
       'face (when (doom-modeline--active) `(:foreground "#000000" :background "#F7DC6F")))))
 
   (doom-modeline-def-modeline 'main
-    '(bar workspace-name matches buffer-info buffer-position parrot selection-info misc-info process)
+    '(bar workspace-name matches buffer-info buffer-position parrot selection-info process)
     '(objed-state grip lsp major-mode vcs checker nathan/time))
 
   (doom-modeline-def-modeline 'minimal
@@ -167,10 +191,6 @@
 (helm-autoresize-mode 1)
 (helm-projectile-on)
 
-;; (use-package awesome-tab
-;;   :load-path "~/.emacs.d/awesome-tab/"
-;;   :config (awesome-tab-mode 1))
-
 (use-package magit
   :ensure t)
 (global-set-key (kbd "C-x g") 'magit-status)
@@ -182,6 +202,9 @@
 ;;   (setq company-idle-delay 0)
 ;;   (setq company-show-numbers t))
 
+(use-package go-mode
+  :ensure t)
+
 (use-package flycheck
   :ensure t
   :config
@@ -190,8 +213,14 @@
 
 (use-package lsp-mode
   :ensure t
-  :hook ((python-mode . lsp))
+  :hook ((python-mode go-mode) . lsp-deferred)
+  ;; :hook ((python-mode go-mode-hook))
   :commands lsp)
+
+(defun lsp-go-install-save-hooks ()
+  (add-hook 'before-save-hook #'lsp-format-buffer t t)
+  (add-hook 'before-save-hook #'lsp-organize-imports t t))
+(add-hook 'go-mode-hook #'lsp-go-install-save-hooks)
 
 (use-package lsp-ui
   :ensure t
@@ -199,7 +228,7 @@
   (setq lsp-ui-flycheck-enable t)
   (setq lsp-ui-peek-enable nil)
   (setq lsp-ui-imenu-enable nil)
-  (setq lsp-ui-sideline-enable nil)
+  ;; (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-doc-enable nil)
   (setq lsp-prefer-flymake nil))
   ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode))
@@ -208,10 +237,11 @@
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-company-mode))
+  ;; (push 'company-capf company-backends))
 
-(use-package company-lsp
-  :ensure t
-  :config (push 'company-lsp company-backends))
+;; (use-package company-lsp
+;;   :ensure t
+;;   :config (push 'company-lsp company-backends))
 
 (add-to-list 'display-buffer-alist
              `(,(rx bos "*Flycheck errors*" eos)
@@ -226,7 +256,7 @@
   :config
   (define-key projectile-mode-map (kbd "s-p") 'projectile-command-map)
   (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-  (setq projectile-project-search-path '("~/workspace/" "~/workspace/user_admin/"))
+  (setq projectile-project-search-path '("~/workspace/"))
   ;; (setq projectile-switch-project-action 'venv-projectile-auto-workon)
   (projectile-mode +1)
   )
@@ -244,6 +274,7 @@
   (add-to-list 'neo-hidden-regexp-list "__pycache__")
   )
 
+(require 'org-tempo)
 (setq org-hide-emphasis-markers t)
 (setq org-startup-indented t)
 ;; (setq org-ellipsis " ..")
@@ -294,3 +325,8 @@
 (use-package ox-hugo
   :ensure t
   :after ox)
+
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window))

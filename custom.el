@@ -4,8 +4,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-names-vector
+   ["#3c3836" "#fb4933" "#b8bb26" "#fabd2f" "#83a598" "#d3869b" "#8ec07c" "#ebdbb2"])
  '(custom-safe-themes
-   '("aded61687237d1dff6325edb492bde536f40b048eab7246c61d5c6643c696b7f" "4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default))
+   '("7661b762556018a44a29477b84757994d8386d6edee909409fabe0631952dad9" "aded61687237d1dff6325edb492bde536f40b048eab7246c61d5c6643c696b7f" "4cf9ed30ea575fb0ca3cff6ef34b1b87192965245776afa9e9e20c17d115f3fb" default))
  '(display-line-numbers t)
  '(helm-completion-style 'emacs)
  '(initial-frame-alist '((fullscreen . maximized)))
@@ -18,7 +20,8 @@
  '(mode-line-in-non-selected-windows nil)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(package-selected-packages
-   '(helm-ag helm-projectile ag gruvbox-theme doom-modeline ivy all-the-icons lsp-mode spaceline-all-the-icons better-defaults))
+   '(ox-hugo virtualenvwrapper neotree company lsp-ui flycheck magit use-package exec-path-from-shell go-mode ace-window helm-ag helm-projectile ag gruvbox-theme doom-modeline ivy all-the-icons lsp-mode spaceline-all-the-icons better-defaults))
+ '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(powerline-buffer-size-suffix nil)
  '(powerline-default-separator 'bar)
  '(powerline-display-buffer-size nil)

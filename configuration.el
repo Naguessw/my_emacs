@@ -14,21 +14,24 @@
 (eval-when-compile
   (require 'use-package))
 
-(setq make-backup-files nil)
-(setq auto-save-default nil)
-(setq shell-file-name "/bin/zsh")
-(setq debug-on-error nil)
+(setq make-backup-files nil
+      auto-save-default nil
+      shell-file-name "/bin/zsh"
+      debug-on-error nil
 
-(electric-pair-mode 1)
-(setq electric-pair-preserve-balance nil)
-(setq electric-pair-inhibit-predicate
+      display-line-numbers t
+      line-number-mode nil
+      electric-pair-preserve-balance nil
+      electric-pair-inhibit-predicate
       (lambda (c)
         (if (or (char-equal c ?\") (char-equal c ?\')) (electric-pair-default-inhibit c))))
 
+(electric-pair-mode 1)
 (global-display-line-numbers-mode)
 (setenv "PATH"
         (concat "/usr/local/bin:" "/Library/TeX/texbin/:" (getenv "PATH")))
 (add-to-list 'exec-path "/usr/local/bin/")
+
 (use-package all-the-icons
   :ensure t)
 (add-to-list 'default-frame-alist '(fullscreen . fullboth))
@@ -36,6 +39,12 @@
 (use-package exec-path-from-shell
   :ensure t)
 (exec-path-from-shell-initialize)
+
+(use-package which-key
+  :ensure t
+  :custom (which-key-idle-delay 1.5)
+  :config ;; (which-key-mode)
+          (which-key-setup-side-window-right))
 
 (defun toggle-transparency ()
    (interactive)

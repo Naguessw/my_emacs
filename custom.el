@@ -18,7 +18,7 @@
  '(mode-line-in-non-selected-windows nil)
  '(org-export-backends '(ascii html icalendar latex md odt))
  '(package-selected-packages
-   '(which-key ox-hugo virtualenvwrapper neotree company lsp-ui flycheck magit use-package exec-path-from-shell go-mode ace-window helm-ag helm-projectile ag gruvbox-theme doom-modeline ivy all-the-icons lsp-mode spaceline-all-the-icons better-defaults))
+   '(helm-rg which-key ox-hugo virtualenvwrapper neotree company lsp-ui flycheck magit use-package exec-path-from-shell go-mode ace-window helm-ag helm-projectile ag gruvbox-theme doom-modeline ivy all-the-icons lsp-mode spaceline-all-the-icons better-defaults))
  '(pdf-view-midnight-colors '("#fdf4c1" . "#282828"))
  '(powerline-buffer-size-suffix nil)
  '(powerline-default-separator 'bar)

@@ -18,6 +18,7 @@
       auto-save-default nil
       shell-file-name "/bin/zsh"
       debug-on-error nil
+      ispell-program-name "aspell"
 
       display-line-numbers t
       line-number-mode nil
@@ -223,7 +224,6 @@
 (use-package lsp-mode
   :ensure t
   :hook ((python-mode go-mode) . lsp-deferred)
-  ;; :hook ((python-mode go-mode-hook))
   :commands lsp)
 
 (defun lsp-go-install-save-hooks ()
@@ -239,7 +239,8 @@
   (setq lsp-ui-imenu-enable nil)
   ;; (setq lsp-ui-sideline-enable nil)
   (setq lsp-ui-doc-enable nil)
-  (setq lsp-prefer-flymake nil))
+  (setq lsp-prefer-flymake nil)
+  (setq lsp-ui-sideline-diagnostic-max-lines 2))
   ;; (add-hook 'lsp-mode-hook 'lsp-ui-mode))
 
 (use-package company
@@ -286,6 +287,7 @@
 (require 'org-tempo)
 (setq org-hide-emphasis-markers t)
 (setq org-startup-indented t)
+(add-hook 'org-mode-hook 'turn-on-flyspell)
 ;; (setq org-ellipsis " ..")
 ;; (use-package org-bullets
 ;;   :ensure t
